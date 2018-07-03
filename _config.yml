@@ -1,7 +1,7 @@
 # Site settings
-title: Sketch Developers
-email: developer@sketchapp.com
-url: http://developer.sketchapp.com
+title: Sketch Developers (开发者文档中文版)
+email: sketchapp@robolt.uu.me
+url: http://developer.sketchapp.boltdoggy.com
 github_repo: https://github.com/BoltDoggy/SketchAPI-CN/
 show_dir_listing: false
 
