@@ -36,7 +36,7 @@ permalink: /
 
 ### 扩展的想法
 
-许多出色的 Sketch 功能社区创意最好作为插件实现，而不是作为核心产品的一部分。这样用户就可以通过安装正确的插件来选择他们想要的功能。Sketch 团队在[plugin-request 存储库](https://github.com/sketchplugins/plugin-requests/issues)中的 Github issues 跟踪问题插件。如果您正在寻找一个很棒的插件来构建，请查看 issues。
+许多出色的 Sketch 功能社区创意最好作为插件实现，而不是作为核心产品的一部分。这样用户就可以通过安装正确的插件来选择他们想要的功能。Sketch 团队在 [plugin-request 存储库](https://github.com/sketchplugins/plugin-requests/issues)中的 Github issues 跟踪问题插件。如果您正在寻找一个很棒的插件来构建，请查看 issues。
 
 ## 下一步
 
