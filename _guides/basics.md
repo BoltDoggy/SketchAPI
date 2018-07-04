@@ -1,5 +1,5 @@
 ---
-title: Plugin Basics
+title: 插件基础
 summary: Basic concepts for plugin users.
 permalink: /guides/
 redirect_from: /introduction/
