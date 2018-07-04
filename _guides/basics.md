@@ -21,7 +21,7 @@ order: 100
 * _Action(行为)_: 用户所做的事情（选择菜单或更改文档）触发 _Command_
 * _Command(命令)_: 一个插件可以定义多个命令; 通常每一个都与不同的菜单或键盘快捷键相关联，并导致执行不同的 _Handler_ 程序。
 * _Handler(操作)_: 执行一些代码来实现 _Command_ 的函数。
-* _Script(脚本)_: 包含一个或多个实现一个或多个 _Commands 的处理程序*的 JavaScript 文件。
+* _Script(脚本)_: 一个 JavaScript 文件, 包含一个或多个用来实现一个或多个 _Commands_ 的 _Handlers_。
 
 ## 我如何制作插件？
 
