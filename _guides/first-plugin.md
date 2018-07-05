@@ -1,4 +1,9 @@
-# 你的第一个插件
+---
+title: 你的第一个插件
+summary: Basic concepts for plugin users.
+permalink: /guides/first-plugin/
+order: 110
+---
 
 本文档将带着你创建第一个 Sketch 插件 -- Hello World，并解释基本的 Sketch 可扩展性概念。
 
@@ -14,11 +19,13 @@
 
 我们写了一个名为 [skpm](https://github.com/skpm/skpm) 的小型工具链来帮助你入门。安装 `skpm` 并搭建脚手架，然后来创建我们的新插件吧：
 
-    npm install -g skpm
+```bash
+npm install -g skpm
 
-    skpm create my-plugin
+skpm create my-plugin
 
-    cd my-plugin
+cd my-plugin
+```
 
 ## 运行你的插件
 
@@ -34,21 +41,23 @@
 
 运行后，生成的插件应具有如下的结构：
 
-    .
-    ├── .gitignore
-    ├── README.md
-    ├── src                         // sources
-    │   ├── manifest.json           // plugin's manifest
-    │   └── my-command.js           // source code of the command
-    ├── node_modules
-    │   └── skpm                    // the sketch plugin developer toolchain
-    ├── my-plugin.sketchplugin      // compilation output, the actual plugin
-    │   └── Contents
-    │       ├── Resources
-    │       └── Sketch
-    │           ├── manifest.json
-    │           └── my-command.js
-    └── package.json
+```
+.
+├── .gitignore
+├── README.md
+├── src                         // sources
+│   ├── manifest.json           // plugin's manifest
+│   └── my-command.js           // source code of the command
+├── node_modules
+│   └── skpm                    // the sketch plugin developer toolchain
+├── my-plugin.sketchplugin      // compilation output, the actual plugin
+│   └── Contents
+│       ├── Resources
+│       └── Sketch
+│           ├── manifest.json
+│           └── my-command.js
+└── package.json
+```
 
 让我们来看看所有这些文件存在的目的并解释一下它们的作用：
 
@@ -74,16 +83,18 @@
 
 在 `src/my-command.js` 中，尝试着替换命令实现以展示所选中的图层数。
 
-    export default function(context) {
-        const selectedLayers = context.selection
-        const selectedCount = selectedLayers.length
+```js
+export default function(context) {
+    const selectedLayers = context.selection
+    const selectedCount = selectedLayers.length
 
-        if (selectedCount === 0) {
-            context.document.showMessage('No layers are selected.')
-        } else {
-            context.document.showMessage(`${selectedCount} layers selected.`)
-        }
+    if (selectedCount === 0) {
+        context.document.showMessage('No layers are selected.')
+    } else {
+        context.document.showMessage(`${selectedCount} layers selected.`)
     }
+}
+```
 
 运行 `npm run build` 以重建插件。打开一个 Sketch 文件，并选中一些图层。当你运行 `my-plugin` 命令时你就可以看到所选中的图层数量了。
 
