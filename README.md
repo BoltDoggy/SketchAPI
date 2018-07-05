@@ -1,8 +1,8 @@
-# developer.sketchapp.com
+# developer.sketchapp.boltdoggy.com
 
-This repository powers the development site for [Sketch](http://sketchapp.com), that lives at [developer.sketchapp.com](http://developer.sketchapp.com).
+此存储库为 Sketch 的开发者文档中文站点提供支持，该站点位于 developer.sketchapp.boltdoggy.com。
 
-[中文版](https://github.com/BoltDoggy/SketchAPI-CN/blob/gh-pages/README_CN.md)
+> 本页面为此存储库的说明文件, 非原仓库 README.md 的翻译.
 
 ## Contribute!
 
