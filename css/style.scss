@@ -44,4 +44,15 @@
 @import "pages/blog";
 
 // API help
-@import "pages/api"
+@import "pages/api";
+
+.main-footer.bolt-footer {
+    background: #e6e7e8 !important;
+}
+
+@media screen and (min-width: 767px) {
+    .main-footer.bolt-footer{
+        position: relative;
+        top: -30px;
+    }
+}
