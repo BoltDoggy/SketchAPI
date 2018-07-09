@@ -72,41 +72,40 @@ defaults write ~/Library/Preferences/com.bohemiancoding.sketch3.plist actionWild
 }
 ```
 
-## Always reload scripts before running
+## 始终在运行前重新加载脚本
 
-For performance reasons, Sketch caches the contents of the Plugins folder. This is very convenient for users, since Plugins run very fast, but makes your life hard if you’re a developer. That’s why we added a preference to disable this caching mechanism and force Sketch to always reload a Plugin’s code from disk:
+出于性能原因，Sketch 会缓存 Plugins 文件夹的内容。这对用户来说非常方便，因为插件运行速度非常快，但如果你是开发人员，会让你的生活变得艰难。这就是我们添加首选项以禁用此缓存机制并强制 Sketch 始终从磁盘重新加载插件代码的原因：
 
 ```shell
 defaults write ~/Library/Preferences/com.bohemiancoding.sketch3.plist AlwaysReloadScript -bool YES
 ```
 
-If you enable this, as soon as you save your script it will be ready for testing in Sketch (bye bye relaunching it just to test a small change!)
+如果您启用此功能，只要您保存脚本，它就可以在 Sketch 中进行测试（对重启说再见, 如果只是为了测试一个小小的更改！）
 
-Please note that this setting determines whether the source of the script is reloaded from disc whenever Sketch makes a new javascript context for the script. If it’s `NO`, the source is cached, if it’s `YES`, the source is always reloaded from disc.
+请注意，此设置用来确定, 在每当 Sketch 为脚本创建新的 javascript 上下文时, 是否从磁盘盘重新加载脚本源。如果是 `NO`，则缓存源，如果是 `YES`，则始终从光盘重新加载源。
 
-What it doesn’t do, however, is change when a new JavaScript context is made. For long-running scripts, the same context is held in memory (it has to be — the running script is using it) until the script exits. So if you’re testing a long-running script, you will still have to find a way to stop the script, so that the context gets thrown away (that usually means relaunching Sketch, or setting `coscript.setShouldKeepAround(false)`).
+然而，它没有做的是在创建新的 JavaScript 上下文时进行更改。对于长时间运行的脚本，相同的上下文保存在内存中（必须是 - 正在运行的脚本正在使用它），直到脚本退出。因此，如果您正在测试一个长时间运行的脚本，您仍然必须找到一种方法来停止脚本，以便抛弃上下文（这通常意味着重新启动 Sketch 或设置 `coscript.setShouldKeepAround(false)`）。
 
-### Always restarting sketch after changes to plugin JavaScript
+### 更改插件 JavaScript 后始终重新启动 sketch
 
-If you find yourself in the latter category, of needing to restart long-running JavaScript contexts regularly during development, the unix utility [`entr`](http://entrproject.org/) may come in handy. Given a list of files on stdin, it will run a command (or restart a long-running process given `-r`) every time one of those files is modified:
+如果您发现自己属于后一类，需要在开发期间定期重新启动长时间运行的 JavaScript 上下文，那么 unix 实用程序 [`entr`](http://entrproject.org/) 可能会派上用场。给定 stdin 上的文件列表，`-r` 每次修改其中一个文件时，它将运行一个命令（或重新启动一个长时间运行的进程）：
 
 `find /your/plugin/build/dest -name '*js' | entr -r /Applications/Sketch.app/Contents/MacOS/Sketch`
 
-#### In conjunction with webview JavaScript
+#### 与 webview JavaScript 结合使用
 
-And if you so happen to also have webview JavaScript that doesn't require rebooting Sketch (because right-click + reload is fine), just make sure to avoid passing those files to `entr`:
+如果您碰巧也有不需要重新启动 Sketch 的 webview JavaScript（因为右键单击 + 重新加载已经足够了），请确保避免将这些文件传递给 `entr`：
 
 `find ... | grep -v 'web\.js' | entr ...`
 
+## 检查 WebView
 
-## Inspect a WebView
+如果您的插件使用的是 webview，那么您可能需要在某个时候进行检查。
 
-If your plugin is using a webview, chances are that you will need to inspect it at some point.
-
-To do so, you need to add the preference:
+为此，您需要添加首选项：
 
 ```shell
 defaults write com.bohemiancoding.sketch3 WebKitDeveloperExtras -bool true
 ```
 
-Then you can simply right-click on your webview and click on `Inspect`. The inspector should show up.
+然后，您只需右键单击您的 webview 并单击 `Inspect` 即可。检查器就将会出现。
