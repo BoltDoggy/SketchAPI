@@ -5,33 +5,35 @@ permalink: /guides/debugging-plugins/
 order: 130
 ---
 
-When developing a Sketch plugin, chances are you will need some ways to know what is happening when your code is running.
+在开发 Sketch 插件时，你可能需要一些方法来了解代码运行时发生了什么。
 
-## Logs
+## 日志
 
-The most common way to debug a JavaScript code is to put a bunch of `console.log` at key steps. Unfortunately, JavaScriptCore (the [context in which a Sketch plugin is running](/guides/cocoascript/)) doesn't provide `console`. Instead, a special method called `log` is available.
+调试 JavaScript 代码最通常的做法就是在关键步骤处放入一堆 `console.log`。但不幸的是，JavaScriptCore （[运行 Sketch 插件的环境](https://developer.sketchapp.com/guides/cocoascript/)）没有提供 `console` 方法。作为替代，可以使用一个名为 `log` 的特殊方法。
 
-There are several options to see those logs:
+有以下几种选择可以查看日志：
 
-* Open Console.app and look for the sketch logs
-* Look at the `~/Library/Logs/com.bohemiancoding.sketch3/Plugin Output.log` file
-* Run `skpm log` which will output the file above (`skpm log -f` to stream the logs)
+* 打开 Console.app 并查找 sketch 日志
 
-`skpm` will polyfill `console` so that you can use `console.log` as usual. In addition to using the `log` method behind the scene, it will also forward the logs to [`sketch-dev-tools`](https://github.com/skpm/sketch-dev-tools).
+* 查看 `~/Library/Logs/com.bohemiancoding.sketch3/Plugin Output.log` 文件
 
-## `debugger` and variable inspection
+* 运行 `skpm log` 命令，该命令可以输出上面的文件（执行 `skpm log -f` 可以流式地输出日志）
 
-When a plugin is running, Sketch creates a JavaScript context associated to it. It is possible to inspect this context using Safari.
+`skpm` 也是 `console` 的 一个polyfill，这样你就可以像往常一样使用 `console.log` 了。除了在后台调用 `log` 方法以外，它还会将日志转发到 [sketch-dev-tools](https://github.com/skpm/sketch-dev-tools)。
 
-In Safari, go to `Develop` > _`name of your machine`_ > `Automatically Show Web Inspector for JSContexts`. And you probably want to enable `Automatically Pause Connecting to JSContext` otherwise the inspector will close before you can interact with it (the context is destroyed when the script has finished running).
+## `调试器` 和变量检查
 
-Now you can use breakpoints in your code, inspect the value of variables at runtime, etc.
+当插件运行时，Sketch 将会创建一个与其关联的 JavaScript 上下文。我们就可以使用 Safari 来调试该上下文。
 
-## Objective-C classes introspection
+在 Safari 中, 打开 `开发` > _`你的机器名称`_ > `自动显示 JSContext 的网页检查器`. 并且你可能希望启用 `自动暂停连接到 JSContext`，否则检查器将在你可以与它交互之前关闭（当脚本运行完时上下文会被销毁）。
 
-The plugin system in Sketch gives you full access to the app's internals and the core frameworks in macOS. Sketch is built using Objective-C and its classes are bridged to JavaScript. It is often useful to know what classes you are dealing with and what methods are defined on it.
+现在你就可以在代码中使用断点了，也可以在运行时检查变量的值等等。
 
-You can access those information with some introspection methods defined by the bridge. For example:
+## Objective-C 类的内省
+
+Sketch 中的插件系统使你可以完全访问应用程序的内部结构和 macOS 中的核心框架。Sketch 是用 Objective-C 构建的，它的类桥接到了 JavaScript。了解你正在处理的类以及在这些类上定义的方法通常会很有用。
+
+你可以使用桥接器定义的一些内省方法来访问这些信息。例如：
 
 ```js
 String(context.document.class()) // MSDocument
@@ -53,4 +55,4 @@ mocha.protocolsWithAncestors()
 
 ## Sketch-dev-tools
 
-We created a small Sketch specific tool to help you with debugging your plugins and hopefully make your life easier. It takes the form of a Sketch plugin that you can download [here](https://github.com/skpm/sketch-dev-tools/releases/latest) and launch with `cmd + option + j`.
+我们创建了一个小型的特殊 Sketch 工具来帮助你调试你的插件，并且希望你能够因此而轻松一些。它采用了 Sketch 插件的形式，你可以在[这里](https://github.com/skpm/sketch-dev-tools/releases/tag/v0.6.0)下载并使用 `cmd + option + j` 来启动。
