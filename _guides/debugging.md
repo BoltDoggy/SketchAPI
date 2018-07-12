@@ -1,5 +1,5 @@
 ---
-title: Debugging
+title: 调试
 summary: How to debug a sketch plugin
 permalink: /guides/debugging-plugins/
 order: 130

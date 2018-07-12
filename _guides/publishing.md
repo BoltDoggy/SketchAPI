@@ -1,5 +1,5 @@
 ---
-title: Publishing Plugins
+title: 发布插件
 summary: How to publish a plugin for the first time and how to publish updates
 permalink: /guides/publishing-plugins/
 redirect_from: /introduction/updating-plugins/
