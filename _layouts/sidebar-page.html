@@ -6,15 +6,15 @@ layout: base
     <div class="row">
       <aside class="col span-3 toc-nav" role="complementary">
         <header>
-          <h1 class="h3 nav-toggle">Contents</h1>
-          <span class="search-toggle ir">Search</span>
+          <h1 class="h3 nav-toggle">目录</h1>
+          <span class="search-toggle ir">搜索</span>
         </header>
         <nav role="navigation">
           <ol>
             {% if page.url contains '/guides/' %}
               {% assign guides = site.guides | sort:"order" %}
               <li>
-                <h2>Getting Started</h2>
+                <h2>起步</h2>
                 <ol>
                   {% for guide in guides %}
                     {% if guide.order < 200 %}
@@ -24,7 +24,7 @@ layout: base
                 </ol>
               </li>
               <li>
-                <h2>Advanced</h2>
+                <h2>进阶</h2>
                 <ol>
                   {% for guide in guides %}
                     {% if guide.order >= 200 %}
