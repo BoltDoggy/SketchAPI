@@ -6,47 +6,47 @@ redirect_from: /introduction/updating-plugins/
 order: 150
 ---
 
-Sketch plugins are listed in a GitHub repository. This document explains how to publish it there and how to allow Sketch to receive updates for your plugin.
+Sketch 插件被列在 GitHub 仓库中。该文档介绍了怎样将插件发布到那里以及如何让 Sketch 接收到你插件的更新。
 
-## Publishing for the first time
+## 第一次发布
 
-Sketch plugins are listed in a GitHub repository: [https://github.com/sketchplugins/plugin-directory](https://github.com/sketchplugins/plugin-directory).
+Sketch 插件列在 GitHub 仓库中：[https://github.com/sketchplugins/plugin-directory](https://github.com/sketchplugins/plugin-directory).
 
-To add your plugin to the list, open a PR with the information about your plugin. Once it is merged, your plugin will appear here: [https://sketchapp.com/extensions/plugins/](https://sketchapp.com/extensions/plugins/)
+要将插件添加到列表中，请提交一个包含插件信息的 PR。一旦它被合并后，你的插件将展示在这： [https://sketchapp.com/extensions/plugins/](https://sketchapp.com/extensions/plugins/)
 
-If you use `skpm`, the first time you publish a plugin using `skpm publish`, it will automatically create the PR for you.
+如果你使用 `skpm`，那么第一次使用 `skpm publish` 发布插件时，它将自动为你创建相应的 PR。
 
-## Publishing an update
+## 发布更新
 
-From Sketch v45 onwards Sketch provides an officially supported mechanism for updating plugins within the app.
+从 Sketch v45 版本开始，Sketch 提供了一种官方支持的机制，用于更新应用程序中的插件。
 
-If your plugin already has its own update mechanism built into it, we encourage that you move to using the new system. This will improve the user experience, since users will be able to manage all installed plugins inside a tab in the app’s Preferences panel.
+如果你的插件已经有了自己内置的更新机制，我们建议你换作使用新系统。这将改善用户体验，因为用户可以在应用程序的首选项选项卡里管理已经安装了的所有插件。
 
-On launch, we check for updates for all installed plugins, and if there’s any, we show a badge on Sketch’s window. Clicking it will take the user to the app’s Preferences, where they’ll be able to update their plugins.
+启动时我们会检查所有已安装插件的更新，如果有的话，我们会在 Sketch 的窗口上显示一个徽章，点击它时会跳转到应用程序的首选项，在这里他们可以更新他们的插件。
 
-Currently Sketch only allows the user to update to the latest version. Future versions of Sketch may provide additional options for the user to select which plugin version can be downloaded and installed.
+现在 Sketch 仅允许用户更新至最新版本。在未来的版本中 Sketch 可以提供额外的选项给用户，以选择要下载和安装哪个插件版本。
 
-You have two solution to opt-in this update mechanism:
+你有两种方式来选择性加入该更新机制：
 
-### 1. Using `skpm`
+### 1. 使用 `skpm`
 
-By running `skpm publish`, it will automatically publish the updated version of your plugin and make sure Sketch can pick it up.
+通过执行 `skpm publish`, 它将自动为你发布插件的更新版本，并且会确保 Sketch 能够获取到它。
 
-### 2. Manual
+### 2. 手动操作
 
-There is an additional entry in the `manifest.json` file contained within your plugin bundle that you need to define for updating to work.
+在插件包中包含的 `manifest.json` 文件里有一个附加条目，你需要定义该文件以便更新工作。
 
-The entry is called `appcast`, and it is a string specifying a URL to the appcast file.
+该条目称为 `appcast`, 它是一个字符串，指定了 appcast 文件的 URL。
 
-#### The `appcast.xml` file
+#### `appcast.xml` 文件
 
-The appcast file contains information about updates to the plugin, like the versions of available updates and where the updates can be downloaded from. Sketch downloads this file to determine if there are plugin updates available.
+appcast 文件包含插件更新的相关信息，例如可用更新的版本以及可以从哪里下载这些更新。Sketch 会下载该文件以确定是否有可用的插件更新。
 
-The Appcast conforms to the Sparkle defined appcast described in the [Sparkle Documentation](https://sparkle-project.org/documentation/) and on the [Publishing an Update page](https://sparkle-project.org/documentation/publishing/#publishing-an-update). For Sketch plugins, only .zip files are supported as enclosures.
+Appcast 符合 [Sparkle 文档](https://sparkle-project.org/documentation/) 和 [发布更新页面](https://sparkle-project.org/documentation/publishing/#publishing-an-update) 中描述的 Sparkle 定义的 appcast。对于 Sketch 插件，仅支持 .zip 文件作为附件。
 
-The minimum and maximum system version do not refer to the version of the operating system when used for plugins. Exactly how they will be used in a later version of Sketch is still undecided.
+最小和最大系统版本不是指用于运行插件时的操作系统版本。究竟如何在以后的 Sketch 版本中使用它们仍然待定。
 
-The following Appcast example lists three different versions of the plugin. Each version has its own download link and brief description text.
+下面的 Appcast 示例列出了该插件的三种不同版本。每个版本都有自己的下载链接和简短的说明文本。
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -93,23 +93,22 @@ The following Appcast example lists three different versions of the plugin. Each
 </rss>
 ```
 
-### Implementing the Startup and Shutdown methods in your Plugin
+### 在插件中实现启动和关闭方法
 
-If your plugin does anything that requires some initialization you should implement the `Startup` handler as part of your plugin. The same goes for implementing the `Shutdown` handler, where you should implement any cleanup code that your plugin requires.
-You may have already been using these events, but with plugin updating it is more important than ever to do so.
+如果你的插件执行任何需要初始化的操作，则你应将启动处理程序作为插件的一部分实现。同样实现关闭处理程序也是如此，你应该在其中实现插件所需要的任何清理代码。你可能已经在使用这些事件了，但是通过插件更新，这比以往任何时候都重要。
 
-When a plugin is updated, the version being updated will be sent the `Shutdown` action. And the new version will be sent a `Startup` action.
+插件更新时，会给正在被更新的版本发送一个关闭操作，给新版本发送一个启动操作。
 
-For example, if your plugin displays some user interface elements within Sketch, you should remove those in the `Shutdown` handler. This way, the new plugin will be able to show the updated user interface components with all of the old user interface elements having been removed.
+例如，如果你的插件在 Sketch 中展示了一些用户界面元素，那么你应该在关闭处理程序中移除它们。这样的话，新插件就能够显示已删除所有旧用户界面元素更新后的用户界面组件。
 
-The same goes for any persistent data that your plugin maintains. Any unsaved information should be written to disk when `Shutdown` is called.
+插件所维护的任何持久性数据都是如此。调用关闭处理程序时，应将所有未保存的信息写入磁盘。
 
-Do not include code in the `Startup` handler that could be run later.
+不要在稍后可以运行的启动处理程序当中包含代码。
 
 
-### Troubleshooting
+### 疑难解答
 
-So you've followed all the steps, and your plugin is still not updating? Try these:
+如果你遵循了所有的步骤，但是插件仍然没有更新，那么试试这些方法：
 
-- Remove the `PluginsWarehouse` folder that lives in `~/Library/Application Support/com.bohemiancoding.sketch3/`. This is where we cache plugin downloads, and if you've been testing different versions of your appcast, you probably have some old stuff there that's worth cleaning.
-- Make sure the `manifest.json` in your downloaded ZIP has a version number that matches the one in your appcast. If the appcast says the ZIP contains v1.2, but the actual ZIP says it's v1.1, the installation will not work.
+- 删除位于 `~/Library/Application Support/com.bohemiancoding.sketch3/` 中的 `PluginsWarehouse` 文件夹。这是我们缓存插件下载的地方，如果你一直在测试 appcast 的不同版本，那么在这个地方很有可能有一些值得清理的旧东西。
+- 确保下载的 ZIP 包中的 `manifest.json` 文件里的版本号和 appcast 中的版本号相匹配。如果 appcast 表示 ZIP 包含 v1.2，但实际的 ZIP 表示它是 v1.1，那么将无法正常安装。
