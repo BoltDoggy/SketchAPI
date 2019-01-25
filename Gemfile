@@ -1,4 +1,4 @@
-source 'https://gems.ruby-china.org/'
+source 'https://gems.ruby-china.com/'
 
 group :jekyll_plugins do
   gem 'jekyll'

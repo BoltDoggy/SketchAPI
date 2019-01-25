@@ -9,13 +9,13 @@ order: 140
 
 ## 什么是 action?
 
-An action is an event that happens in the app, usually as a consequence of a user interaction. Actions have names like `CloseDocument`, `DistributeHorizontally` or `TogglePresentationMode`, and you can tell your plugin to run bits of code when those actions are triggered.
+action 是应用程序中发生的事件，通常是用户交互的结果。 action 的名称如 `CloseDocument`，`DistributeHorizontally` 或 `TogglePresentationMode`，你可以告诉你的插件在触发这些动作时运行一些代码。
 
 ## 如何注册我的插件以 "监听" 某个 action?
 
-Easy: you just add a handler in the `manifest.json` file that your plugin already has.
+简单：您只需在插件已有的 `manifest.json` 文件中添加一个处理程序。
 
-We're going to add a new handler, for the `OpenDocument` action:
+我们将为 `OpenDocument` 操作添加一个新的处理程序：
 
 ```diff
 "commands" : [
@@ -34,7 +34,7 @@ We're going to add a new handler, for the `OpenDocument` action:
 ],
 ```
 
-We're telling our plugin that we want to run the `onOpenDocument` function when a document is open, so let's add that in `my-action-listener.js`:
+我们告诉我们的插件我们想在文档打开时运行 `onOpenDocument` 函数，所以让我们在 `my-action-listener.js` 中添加它：
 
 ```js
 export function onOpenDocument(context) {
@@ -42,25 +42,25 @@ export function onOpenDocument(context) {
 }
 ```
 
-Save everything, build the plugin and now whenever you open a document in Sketch you should see a small toast banner saying "Document Opened".
+保存所有内容，构建插件，现在无论何时在 Sketch 中打开文档，您都应该看到一个小的 Toast 横幅，上面写着 “Document Opened”。
 
 ## Action 上下文
 
-When an action is triggered, Sketch can send the target function some information about the action itself (like the selected layers when the selection changes, or the current document when a new document is open). We call that the Action Context, and you can access it from the `context` that is sent as a parameter of the target function using `context.actionContext`.
+触发操作时，Sketch 可以向目标函数发送有关操作本身的一些信息（如选择更改时的选定图层，或打开新文档时的当前文档）。 我们称之为 Action Context，您可以使用 `context.actionContext` 从 `context` 访问它，该 `context` 是作为目标函数的参数发送的。
 
-Keep in mind, though, that **not all actions set an Action Context yet**. In fact, most of them don't at the moment, so if you think there's something you'd like to access in an Action Context, send us a note and we'll add it as soon as possible.
+但请记住，**并非所有操作都设置了动作上下文**。 事实上，他们中的大部分目前都没有，所以如果你认为你想在行动背景中访问某些内容，请给我们发一条说明，我们会尽快添加。
 
 ## `begin`/`finish` actions
 
-Some actions (like `SelectionChanged`) actually happen in two phases: `begin` and `finish`. If you want to call a function only on one of them, you can add a handler for `SelectionChanged.begin`, or `SelectionChanged.finish`. If you don't add anything, the action will be triggered twice.
+一些动作（如 `SelectionChanged` ）实际上分两个阶段发生：`begin` 和 `finish`。 如果只想在其中一个函数上调用函数，可以为 `SelectionChanged.begin` 或 `SelectionChanged.finish` 添加一个处理程序。 如果您不添加任何内容，操作将被触发两次。
 
 ## 找到正确的 action
 
-For a list of all the available actions in the API, check the [Actions Reference section](/reference/action).
+有关 API 中所有可用操作的列表，请查看 [操作参考部分](/reference/action)。
 
-> Pro Tip: sometimes browsing the list is too much work, and you just want something a bit more direct. For those cases, you can [listen to all the actions](/guides/preferences/#listen-to-all-actions-in-the-action-api) to find the one you need.
+> 专业提示：有时浏览列表是太多操作，你只是想要更直接的东西。 对于这些情况，您可以 [监听所有操作](/guides/preferences/#listen-to-all-actions-in-the-action-api) 找到您需要的那个。
 
-Again, if there's any event you'd like to see added to the list, let us know and we'll try to add it (some events are not on the list for performance reasons, like "layer is dragged").
+同样，如果您希望看到添加到列表中的任何事件，请告诉我们，我们将尝试添加它（由于性能原因，某些事件不在列表中，例如 “图层被拖动”）。
 
 ## 下一步
 

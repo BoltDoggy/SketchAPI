@@ -1,5 +1,5 @@
 ---
-title: Plugins, Scripts, and Commands
+title: Plugins, Scripts, 和 Commands
 summary: An introduction to writing plugin scripts.
 permalink: /guides/plugin-scripts/
 redirect_from: /introduction/plugin-scripts/

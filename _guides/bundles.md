@@ -5,23 +5,23 @@ redirect_from: /introduction/plugin-bundles/
 order: 200
 ---
 
-A Plugin is a collection of one or more **scripts**. Each script defines one or more **commands** which extend Sketch in some way.
+Plugin(插件) 是一个或多个 **scripts(脚本)** 的集合。 每个 script 定义一个或多个 **commands(命令)** ，它们以某种方式扩展 Sketch。
 
-On disk, a Plugin is a folder with the `.sketchplugin` file extension, containing files and sub-folders.
+在磁盘上，Plugin 是一个带有 `.sketchplugin` 文件扩展名的文件夹，包含文件和子文件夹。
 
-Strictly speaking, a Plugin is actually an [OS X package](https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/DocumentPackages/DocumentPackages.html#//apple_ref/doc/uid/10000123i-CH106-SW1), arranged as an [OS X bundle](https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/AboutBundles/AboutBundles.html#//apple_ref/doc/uid/10000123i-CH100-SW1).
+严格来说，Plugin 实际上是 [OS X package(包)](https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/DocumentPackages/DocumentPackages.html#//apple_ref/doc/uid/10000123i-CH106-SW1)，用作为 [OS X bundle(束)](https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/AboutBundles/AboutBundles.html#//apple_ref/doc/uid/10000123i-CH100-SW1)。
 
-A package is any directory that the Finder presents to the user as if it were a single file (you can use the **Reveal Package Contents** command in the Finder to look inside).
+package 是 Finder 向用户呈现的任何目录，就好像它是单个文件一样（您可以使用 Finder 中的 `Reveal Package Contents(显示包装内容)` 命令查看内部）。
 
-A bundle is a directory with a standardized hierarchical structure that holds executable code and the resources used by that code.
+bundle 是具有标准化分层结构的目录，其保存可执行代码和该代码使用的资源。
 
-Sketch Plugins don’t allow native compiled code, but we do use the standard bundle layout (resources, for example, live in the Resources/ folder in the bundle), with the plugin-specific files located in a Sketch/ directory.
+Sketch 插件不允许原生编译代码，但我们使用标准的 bundle 布局（例如，资源，位于 bundle 中的 Resources/ 文件夹中），特定于插件的文件位于 Sketch/ 目录中。
 
-## Plugin Bundle Folder Structure
+## Plugin Bundle 文件夹结构
 
-Bundles contain a `manifest.json` file, one or more `.cocoascript` files (containing scripts written in CocoaScript or JavaScript) which implement commands shown in the Plugins menu, and any number of shared library scripts and resource files.
+Bundles 包含一个 `manifest.json` 文件，一个或多个 `.cocoascript` 文件（包含用 CocoaScript 或 JavaScript 编写的脚本），它们实现了 Plugins 菜单中显示的命令，以及任意数量的共享库脚本和资源文件。
 
-Here’s an example:
+这是一个例子：
 
 ```
 mrwalker.sketchplugin
@@ -36,15 +36,15 @@ mrwalker.sketchplugin
       Icon.png
 ```
 
-The most critical file is the `manifest.json` file, which tells Sketch where everything else lives.
+最关键的文件是 `manifest.json` 文件，它告诉 Sketch 其他所有东西。
 
-## Manifest
+## Manifest(清单)
 
-The manifest is a JSON file containing metadata about the Plugin, its commands and resources.
+manifest 是一个 JSON 文件，其中包含有关插件，其命令和资源的元数据。
 
-It describes such things as the full name, a description, and the name of the author. It lists the names of any commands defined by the Plugin, and tells Sketch what to call the corresponding menu items and which menus to put them in.
+它描述了诸如全名，描述和作者姓名之类的内容。 它列出了插件定义的任何命令的名称，并告诉 Sketch 如何调用相应的菜单项以及将它们放入哪些菜单。
 
-Here’s an example:
+这是一个例子：
 
 <a id="manifest-json-example"></a>
 

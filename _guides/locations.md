@@ -1,5 +1,5 @@
 ---
-title: Plugin Locations
+title: 插件位置
 summary: Where plugins live, how to install/remove them
 permalink: /guides/installing-plugins/
 order: 350

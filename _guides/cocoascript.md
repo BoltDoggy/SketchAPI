@@ -1,5 +1,5 @@
 ---
-title: More on CocoaScript
+title: 有关 CocoaScript 的更多信息
 permalink: /guides/cocoascript/
 redirect_from: /introduction/cocoascript/
 summary: Some more details on how to use CocoaScript
