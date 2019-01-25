@@ -1,27 +1,27 @@
 ---
 layout: single-page
-title: Reference
+title: 参考
 permalink: /reference/
 script: /js/search.js
 ---
 
-The plugin system in Sketch gives you full access to the app's internals and the core frameworks in macOS. So you have an immense power to build almost _anything_.
+Sketch 中的插件系统使您可以完全访问应用程序的内部结构和 macOS 中的核心框架。 所以你有巨大的力量来建立几乎 _anything_。
 
-With great power comes great responsibility, though, so you'll need to keep an eye on your code with each Sketch release. We change Sketch's internals from time to time when refactoring, and as a result your plugins may be calling some methods that were renamed or removed.
+但是，强大的功能带来了巨大的责任，因此您需要在每个 Sketch 版本中密切关注您的代码。 我们在重构时不时更改 Sketch 的内部结构，因此您的插件可能会调用一些重命名或删除的方法。
 
-We do realise that this is not of course ideal. That is why we support JavaScript API sitting between the internals and your plugin. We hope that it covers 90% of the use cases. If it doesn't, you can always tap into the internals at your own risks.
+我们确实意识到这当然不是理想的。 这就是我们支持内部和插件之间的 JavaScript API 的原因。 我们希望它涵盖 90％ 的用例。 如果没有，您可以随时使用自己的风险进入内部。
 
-The pages below contain brief descriptions of all the actions that your plugin can listen for, and some of the key Sketch classes that they can interact with. This is the JavaScript API and it is stable across Sketch releases.
+下面的页面包含插件可以侦听的所有操作的简要说明，以及它们可以与之交互的一些关键 Sketch 类。 这是 JavaScript API，它在 Sketch 版本中保持稳定。
 
 * [Javascript API](/reference/api)
 * [Actions](/reference/action)
 
-Even though we are not going to document the internals, there are 3 sources of information you can look into:
+即使我们不打算记录内部信息，也可以查看 3 种信息来源：
 
-* [The official AppKit document](https://developer.apple.com/documentation/appkit?language=objc): this is Apple framework Sketch is built upon.
-* [Foundation](https://developer.apple.com/documentation/foundation?language=objc): more essential Apple classes and services.
-* [The Sketch Headers](https://github.com/abynim/Sketch-Headers) (Thanks @abynim 🙏): this is the headers of all the classes used by Sketch. If your plugin breaks with a new release because you used a method that was removed, you can check the diffs to find a replacement.
+* [The official AppKit document](https://developer.apple.com/documentation/appkit?language=objc): 这是 Apple 框架 Sketch 的基础.
+* [Foundation](https://developer.apple.com/documentation/foundation?language=objc): 更重要的 Apple 课程和服务.
+* [The Sketch Headers](https://github.com/abynim/Sketch-Headers) (Thanks @abynim 🙏): 这是 Sketch 使用的所有类的标题。 如果您的插件因为使用了已删除的方法而中断了新版本，则可以检查差异以查找替换。
 
-Again, the last link is to use at your own risk, we are not going to document or freeze any of this but we want to give you the power to do anything.
+同样，最后一个链接是使用风险，我们不会记录或冻结任何此类链接，但我们希望赋予您执行任何操作的权力。
 
-To understand how to use those Objective-C classes, look at the [CocoaScript document](/guides/cocoascript/).
+要了解如何使用这些 Objective-C 类，请查看 [CocoaScript document](/guides/cocoascript/).
