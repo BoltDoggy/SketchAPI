@@ -1,28 +1,28 @@
 ---
-title: What's New For Plugins In Sketch 40?
+title: Sketch 40中的插件有什么新功能？
 categories: scripting update
 ---
 
-## Scripting API
+## 脚本 API
 
-With the release of version 40 of Sketch, we're slowly moving towards rolling out our Javascript API as a better way to work with the Sketch model from within your plugins.
+随着Sketch版本40的发布，我们正在逐步推出我们的 Javascript API，作为在插件中使用 Sketch 模型的更好方法。
 
-As part of this work, we've updated this site to include an [API Reference](/reference/api) section.
+作为此项工作的一部分，我们已更新此网站以包含 [API参考](/reference/api)部分。
 
-The API itself is still under development, and should not be regarded as completely fixed or ready for prime-time.
+API本身仍处于开发阶段，不应被视为完全固定或准备好黄金时段。
 
-It's getting there however, and if you're starting to work on new plugins, you may want to consider trying it out.
+但它已经到了那里，如果你开始研究新的插件，你可能要考虑尝试一下。
 
-Over the next few releases we'll be developing the API further, updating all of our existing [plugin examples](https://github.com/BohemianCoding/SketchAPI/tree/develop/examples/) to use the API, and also adding some new examples.
+在接下来的几个版本中，我们将进一步开发API，更新所有现有的 [插件示例](https://github.com/BohemianCoding/SketchAPI/tree/develop/examples/) 以使用API，以及 添加一些新的例子。
 
 ## NSAppTransportSecurity
 
-With the next version of Sketch, we're planning on fully adopting a change that Apple made a while ago known as App Transport Security. This relates to the security of HTTP connections, and requires that all such requests be made using `https:` and not just plain `http:`.
+使用 Sketch 的下一个版本，我们计划完全采用 Apple 之前称为 App Transport Security 的更改。 这与 HTTP 连接的安全性有关，并要求所有这些请求都使用 `https：` 而不仅仅是普通的 `http：`。
 
-Until now we've disabled this feature, but soon we will enable it.
+到目前为止，我们已禁用此功能，但很快我们就会启用它。
 
-Unless your plugin requests content from web pages, it should be unaffected by this change.
+除非您的插件从网页请求内容，否则它不应受此更改的影响。
 
-If however you _do_ fetch data or resources from web pages, you will need to change over to using `https:` in your URLs.
+但是，如果您从网页中获取数据或资源，则需要在URL中使用 “https：” 切换。
 
-We also suggest that everyone changes to using `https:` for any URLs specified in the plugin's manifest file. Future versions of Sketch may use these URLs.
+我们还建议每个人都使用 `https：` 来更改插件清单文件中指定的任何URL。 Sketch的未来版本可能会使用这些URL。

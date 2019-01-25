@@ -1,46 +1,45 @@
 ---
-title: Plugin News
+title: 插件新闻
 categories: scripting update
 ---
 
-We've been hard at work over the last few weeks here on some updates to the Plugin system.
+在过去的几周里，我们一直在努力工作，对 Plugin 系统进行了一些更新。
 
-Some of these will be rolling out along with the upcoming 3.8 release, [which is now in beta](http://www.sketchapp.com/beta/). Others will come later, but in both cases, we wanted to give everyone in the developer community some early warning.
+其中一些将与即将发布的 3.8 版本 [现在处于测试阶段](http://www.sketchapp.com/beta/) 一起推出。 其他人将在稍后出现，但在这两种情况下，我们都希望给开发者社区中的每个人一些预警。
 
-## Deprecated APIs
+## 弃用的 API
 
-As many of you are aware, we quite often have to change the code internally, which sometimes means that APIs which we’ve publicised become deprecated. Until now we’ve tended to just leave the old APIs in the code too, and have them spit out a console message saying that they are deprecated.
+正如你们许多人所知，我们经常需要在内部更改代码，这有时意味着我们已经公开的API已被弃用。 到目前为止，我们还倾向于将旧的API留在代码中，并让他们吐出一个控制台消息，说它们已被弃用。
 
-Moving forwards, we intend to start actually removing these APIs. We’ll give you a version or two’s notice (so if we deprecate something in 3.7, we won’t remove it until 3.9), but you should be aware that deprecated will no longer mean “you can ignore this” and will now mean “you really should stop using this”.
+向前迈进，我们打算开始实际删除这些API。 我们会给你一个或两个版本的通知（所以如果我们弃用 3.7 中的东西，我们不会删除它直到 3.9），但是你应该知道弃用将不再意味着 “你可以忽略它”，现在意味着 “你真的应该停止使用这个”。
 
-## Legacy Plugins
+## 传统插件
 
-On a similar note, back in version 3.3 we introduced a new bundle format for Plugins. It has lots of benefits, but to ease the transition, we continued to support old single-file Plugins.
+在类似的说明中，回到3.3版本，我们为插件引入了一种新的捆绑格式。 它有很多好处，但为了简化过渡，我们继续支持旧的单文件插件。
 
-In order to simplify our code and allow us to add new scripting features, we intend to deprecate and then remove support for old Plugins. Starting with version 3.9, any commands provided by old-style Plugins will be grouped under a “Legacy” heading in the menu.
+为了简化我们的代码并允许我们添加新的脚本功能，我们打算弃用然后删除对旧插件的支持。 从版本3.9开始，旧式插件提供的任何命令都将分组到菜单中的“Legacy”标题下。
 
-Following on from that, a later version of Sketch will no longer load old Plugins.
+接下来，更高版本的Sketch将不再加载旧插件。
 
-We encourage you to move your Plugins over to the new format now! It’s a pretty simple job, and it will future-proof you.
+我们建议您立即将插件移至新格式！ 这是一项非常简单的工作，它将为您提供面向未来的证明。
 
-We're sure that you are completely sold on this change by now, but one more little nudge, just in case: if you want to have your Plugin featured on our website, you'll need to change them to the new format!
+我们确信你现在已经完全卖掉了这个变化，但还有一点点推荐，以防万一：如果你想在我们的网站上推出你的插件，你需要将它们改成新的格式！
 
 ## Action API
-
-With 3.8, we are introducing the much-requested ability for Plugins to be able to respond to actions that the user performs in Sketch.
+使用3.8，我们为插件引入了很多请求的能力，以便能够响应用户在Sketch中执行的操作。
 
 We have posted [some documentation](/reference/action/) and [example Plugins](https://github.com/BohemianCoding/SketchAPI/tree/develop/examples/) for action support.
 
-We want to make it clear at this point that this is version 1.0 of action support, and more will follow. We are aware that there are some inconsistencies with the way it works right now, and not all the things a user can do will be available to begin with. It's also worth saying that some things may never be available as actions, for performance reasons.
+我们现在要清楚地表明这是行动支持的1.0版本，接下来会有更多内容。 我们意识到它现在的工作方式存在一些不一致之处，并不是用户可以做的所有事情都可以开始使用。 值得一提的是，出于性能原因，某些事情可能永远不可用作动作。
 
 Even having said that though, this feature should greatly expand the range of things that Plugins can usefully do, and we look forward to seeing what you do with it. Please [send us feedback](mailto:mail@sketchapp.com) on how it works for you, and what you’d like to see change.
 
 ## Scripting API
 
-As a few of you may have noticed, we made a tentative step in 3.7 towards adding a JavaScript-only API which Plugins can call.
+正如你们中的一些人可能已经注意到的那样，我们在 3.7 中尝试添加一个只能使用 JavaScript 的 API，这是插件可以调用的。
 
-The intention with this is to make a smaller, more stable set of functionality available to Plugins directly from JavaScript. Each time we release a new version of Sketch we will try to ensure that the API continues to work. This should insulate Plugins using the API from the current situation where they are forced to use internal Sketch code, and then get broken when we change that code.
+这样做的目的是直接从 JavaScript 创建一个更小，更稳定的插件功能集。 每次我们发布 Sketch 的新版本时，我们都会尝试确保 API 继续有效。 这应该使用 API 来限制使用 API 的当前情况，他们被迫使用内部 Sketch 代码，然后在我们更改代码时破坏。
 
-Version 3.8 does contain a slightly updated version of this, but we don’t consider it ready for prime-time, and it isn’t documented properly. The design of the API also definitely isn’t stable at this point, and we don’t recommend using it yet as the names of classes and methods are likely to change.
+版本 3.8 确实包含稍微更新的版本，但我们认为它不适合黄金时段，并且没有正确记录。 API 的设计在这一点上也肯定不稳定，我们不建议使用它，因为类和方法的名称可能会改变。
 
-Consider this an early warning that it is coming, and again, please [send us feedback](mailto:mail@sketchapp.com) on how you’d like to see it work.
+考虑到这是一个早期的警告，它即将到来，请再次 [发送反馈](mailto:mail@sketchapp.com) 了解您希望如何运作。

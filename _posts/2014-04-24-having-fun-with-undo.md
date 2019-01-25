@@ -1,25 +1,25 @@
 ---
-title: Having fun with Undo
+title: 享受撤消乐趣
 ---
 
-We have [taken care](/blog/2014-04-22-more-on-kvo/) of the overhead of KVO in the model and things like Undo are now hardcoded and ‘fast’. But let’s have a look at how we can work with undo, and circumvent it when we don’t need it.
+我们已经 [照顾](/blog/2014-04-22-more-on-kvo/) 模型中KVO的开销，而 Undo 之类的东西现在已经硬编码并且 “快速”。 但是让我们来看看我们如何使用 undo，并在不需要它时绕过它。
 
-Currently in Sketch, each setter method in the model registers its own reverse undo action. It’s a simple concept to understand and it works well for simple object graphs.
+目前在 Sketch 中，模型中的每个 setter 方法都会注册自己的反向撤消操作。这是一个易于理解的概念，适用于简单的对象图。
 
-Performance is critical in Sketch, and some users create enormous drawings with 10K+ objects in the graph easily. When the graph gets that big, making larger modifications to the tree fast becomes really important.
+性能在 Sketch 中至关重要，一些用户可以轻松地在图形中创建具有 10K + 对象的巨大绘图。当图形变得那么大时，快速对树进行更大的修改变得非常重要。
 
-One example is dragging a complex PDF document into Sketch; after parsing it we might have created a couple thousand new objects. Registering undo actions for all setters called during this process is unnecessary and a big performance overhead.
+一个例子是将复杂的 PDF 文档拖入 Sketch; 在解析它之后，我们可能已经创建了几千个新对象。在此过程中为所有调用者注册撤消操作是不必要的，也是一个很大的性能开销。
 
-Fixing this is easy; we just wrap the entire import block in a disable-undo-registration block. But we’re still calling all those methods, copying original object values before the undo manger decides to toss them all away. Not good.
+解决这个问题很容易; 我们只是将整个导入块包装在 disable-undo-registration 块中。但是我们仍然会调用所有这些方法，在撤消管理器决定将它们扔掉之前复制原始对象值。不好。
 
-So how shall we fix this? Let’s add a flag to each model object along the lines of ‘shouldRegisterUndo’. But now we have an extra instance variable on every object. That is wasteful and prone to error; we have to keep all these properties in sync somehow.
+那么我们该如何解决这个问题？让我们沿着 'shouldRegisterUndo' 的行为每个模型对象添加一个标志。但是现在我们在每个对象上都有一个额外的实例变量。这很浪费，容易出错; 我们必须以某种方式保持所有这些属性同步。
 
-Let’s try again. We make a static BOOL 'shouldRegisterUndo’ on the root model object instead. Now we run into trouble if we want to do asynchronous importing on a background thread. So we use NSThread’s threadDictionary to hold these values. Yuck.
+让我们再试一次。我们在根模型对象上创建一个静态 BOOL “shouldRegisterUndo”。现在我们遇到麻烦，如果我们想在后台线程上进行异步导入。所以我们使用 NSThread 的 threadDictionary 来保存这些值。呸。
 
-No, instead let’s have a setX and setPrimitiveX. The former calls the latter but does some extra stuff like undo registration. Importing and other large operations can call setPrimitiveX and everything works. Except that setters may do other things and if those go into setX, we have to remember for each property on each model object whether it has any other side-effects. Ugh.
+不，让我们有一个 setX 和 setPrimitiveX。前者调用后者，但做了一些额外的事情，如撤销注册。导入和其他大型操作可以调用 setPrimitiveX，一切正常。除了setter可以做其他事情，如果那些进入 setX，我们必须记住每个模型对象上的每个属性是否有任何其他副作用。啊。
 
-The word side-effects is probably key here. We should avoid them as much as possible and have setters just be setters. Undo is a task for the controller, one layer level up in our [lasagna stack](http://edgecasesshow.com/085-a-fan-of-ravioli-code.html). It’s important to keep our levels properly separated from each other, each with a clearly defined role.
+副作用这个词可能是关键所在。 我们应该尽可能地避免它们，并且让安装者只是设置者。 撤消是控制器的任务，在我们的 [烤宽面条堆栈](http://edgecasesshow.com/085-a-fan-of-ravioli-code.html) 中升级一层。 保持我们的水平彼此正确分离是很重要的，每个水平都有明确定义的角色。
 
-How exactly we’re going to do that I don’t know yet, but at least it’s clear it doesn’t belong here. To be continued….
+我到底该怎么做才不知道，但至少它显然不属于这里。 未完待续…。
 
 (For comments, I’m [@pieteromvlee](https://twitter.com/pieteromvlee) on Twitter)

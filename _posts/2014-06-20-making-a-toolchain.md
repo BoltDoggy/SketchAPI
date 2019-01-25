@@ -1,5 +1,5 @@
 ---
-title: Making A Toolchain, Not Just A Tool
+title: 制作工具链，而不仅仅是一个工具
 ---
 
 Sketch is a great tool for humans, but sometimes (especially in larger teams), we want to let the robots get in on the action too.
@@ -18,7 +18,7 @@ In some cases, there may be existing chains of tools and scripts in place as par
 
 This is why we made [sketchtool](http://www.sketchapp.com/tool/).
 
-## What It Isn’t
+## 它不是什么
 
 First, it’s probably sensible to say what sketchtool doesn’t do.
 
@@ -26,7 +26,7 @@ For now, at least, sketchtool cannot create new Sketch documents, nor can it mod
 
 We may support a broader range of features at a later date, but for now, sketchtool is all about extracting things from existing documents.
 
-## What It Is
+## 这是什么
 
 Essentially sketchtool lets you do three categories of thing:
 
@@ -34,7 +34,7 @@ Essentially sketchtool lets you do three categories of thing:
 - export pages, artboards, slices or arbitrary layers
 - get a full description of the entire document
 
-### Listing
+### 清单
 
 Given a sketch document called Test.sketch, you can list the pages in it like this:
 
@@ -48,12 +48,12 @@ Similarly
 
 ```
 sketchtool list artboards Test.sketch
-sketchtool list slices Test.sketch 
+sketchtool list slices Test.sketch
 ```
 
 does the same for the artboards and slices (and exported layers) in a document.
 
-### Exporting
+### 出口
 
 Getting information from a document is all very well, but what you probably want is to export images.
 
@@ -83,28 +83,28 @@ The `--items` option lets you list just one or more items to export, by name or 
 
 Options such as `--save-for-web`, `--overwriting`, `--compact`, `--trimmed`, and `--compression` also let you tailor the output.
 
-### Dumping Documents
+### 倾倒文件
 
-One final option that is available currently with sketchtool is the dump command:
+目前使用 sketchtool 的最后一个选项是 dump命令：
 
 ```
 sketchtool dump Test.sketch
 ```
 
-This will output a complete JSON description of the document.
+这将输出文档的完整JSON描述。
 
-This description is very detailed, and thus the output gets large, quickly. It also exposes quite a lot of internal detail about the underlying model, so it’s subject to change in the future, and if you use this command in scripts, you should be prepared for the possibility that they might break one day.
+该描述非常详细，因此输出变得很快，很快。 它还公开了很多关于底层模型的内部细节，因此它将来会发生变化，如果你在脚本中使用这个命令，你应该为它们可能会破坏一天做好准备。
 
-In many cases, if the information that you are trying to extract isn’t obtainable using the list command, your next best bet may be to export using SVG, and parse that, since it’s a stable format.
+在许多情况下，如果使用 list 命令无法获取您尝试提取的信息，那么您的下一个最佳选择可能是使用 SVG 导出，并解析它，因为它是一种稳定的格式。
 
-If that doesn’t work though, you may be able to use the dump command to obtain the information that you need.
+如果这不起作用，您可以使用 dump 命令获取所需的信息。
 
-### Future
+### 未来
 
-In the future, we may expand sketchtool to do more.
+将来，我们可能会扩展 sketchtool 来做更多事情。
 
-If you have a feature request, a bug report, or just a story to tell about the cool things that you’re doing with it, please do get in touch.
+如果您有功能请求，错误报告或仅讲述您正在使用它做的很酷的事情，请与我们取得联系。
 
-You can download the latest version of sketchtool [here](http://www.sketchapp.com/tool/).
+您可以下载最新版本的 sketchtool [here](http://www.sketchapp.com/tool/)。
 
 (For comments, I’m [@samdeane](https://twitter.com/samdeane) on Twitter)

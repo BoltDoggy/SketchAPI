@@ -1,67 +1,67 @@
 ---
-title: More on KVO
+title: 更多关于KVO
 ---
 
-In his previous post, Pieter mentioned that originally we were using KVO registration as a generic mechanism to support Undo in our model.
+Pieter 在上一篇文章中提到，最初我们使用 KVO 注册作为通用机制来支持我们模型中的撤销。
 
-Essentially what happened here was that any model object registered to observe itself, and then used the change notifications that it received to record actions with the Undo manager.
+基本上，这里发生的是任何模型对象注册以观察自身，然后使用它收到的更改通知来记录撤消管理器的操作。
 
-The advantage of this KVO system was that it was nice and generic. It avoided us having to write repetitious code in every model class to do essentially the same thing.
+这个 KVO 系统的优点是它很好而且通用。它避免了我们不得不在每个模型类中编写重复代码来执行基本相同的操作。
 
-The disadvantage was the other side of the same coin. By being generic, the code had to do more work than a custom setter would need to do, particular for properties with primitive values. Let’s take the example of a simple CGFloat property like cornerRadius.
+缺点是同一枚硬币的另一面。通用是通用的，代码必须比自定义setter需要做更多的工作，特别是对于具有原始值的属性。我们来看一个像 cornerRadius 这样的简单 CGFloat 属性的例子。
 
-A custom setCornerRadius: setter could simply register an invocation with the Undo manager, calling itself to set corner radius back to its old value - which it can read before it obliterates it with the new one. Job done.
+自定义 setCornerRadius：setter 可以简单地向 Undo 管理器注册一个调用，调用自己将角半径设置回旧值 - 它可以在用新值删除它之前读取它。任务完成。
 
-A generic solution going through KVO has to deliver everything through the observeValueForKeyPath:ofObject:change:context: method. The old and/or new values have to be delivered in a dictionary, which for primitive types like CGFloat means that they also have to be boxed up as NSNumbers. Additionally, the same method serves as a point of entry for every change to every property, so the property name has to be delivered as a string (the key path). KVO also potentially calls all sorts of other associated methods, such as willChange/didChange, again adding overhead. Finally, the actual KVO registration has to be done at some point, which clearly does a bit more fiddling behind the scenes - a little bit more overhead.
+通过 KVO 的通用解决方案必须通过 observeValueForKeyPath:ofObject:change:context: 方法提供所有内容。旧的和/或新的值必须在字典中传递，对于像 CGFloat 这样的原始类型意味着它们也必须被装箱为 NSNumbers。此外，相同的方法充当每个属性的每个更改的入口点，因此属性名称必须作为字符串（键路径）传递。 KVO还可能调用各种其他相关方法，例如 willChange / didChange，再次增加开销。最后，实际的 KVO 注册必须在某个时刻完成，这显然会在幕后更多地摆弄 - 更多的开销。
 
-Now all of this isn’t onerous most of the time, and when used in the way that it’s intended, KVO is a brilliant solution for a number of tasks.
+现在所有这些在大多数情况下并不繁重，并且当按照预期的方式使用时，KVO 是一个很好的解决方案，适用于许多任务。
 
-### Problems
+### 问题
 
-Using it in the way we were though, we had some problems. These were at least partially design issues in our code, but their effect was to make KVO not the most efficient way to do Undo.
+以我们的方式使用它，我们遇到了一些问题。这些在我们的代码中至少部分是设计问题，但它们的作用是使 KVO 不是最有效的撤销方法。
 
-The biggest problem was that in our design, KVO registration was done too early, essentially when we created objects. This meant that creating a new cluster of objects to form a part of the graph - for example when loading a file from disk - was incurring all of this Undo related overhead, even though we were never going to need to “undo” the loading.
+最大的问题是，在我们的设计中，KVO 注册过早完成，主要是在我们创建对象时。这意味着创建一个新的对象集群以构成图形的一部分 - 例如从磁盘加载文件时 - 会产生所有这些撤销相关的开销，即使我们从未需要 “撤消” 加载。
 
-Similarly, when importing an SVG or PDF file, I found that the code that I was writing to create the layers and set up their properties was spending quite a lot of its time doing unnecessary work relating to the KVO/Undo system.
+同样，在导入 SVG 或 PDF 文件时，我发现我编写的用于创建图层并设置其属性的代码花费了大量时间来完成与 KVO / Undo 系统相关的不必要的工作。
 
-In addition, there *are* times in the normal usage of Sketch where changes are made to a lot of objects at once - for example if the user does Select All and then drags things around. In this situation there are a number of problems to contend with, but losing extra performance to KVO isn’t that helpful…
+此外，在Sketch的正常使用中有 *次*，其中一次对许多对象进行更改 - 例如，如果用户执行全选，然后拖动周围的东西。在这种情况下，有许多问题需要解决，但是对KVO失去额外的性能并没有那么有用......
 
-Finally, I should actually mention here that the KVO code did more than just Undo registration, it also kept track of which objects in the graph had changed - information that was required by our rendering once it became a bit more sophisticated and asynchronous (more of that in a later post, perhaps).
+最后，我实际上应该在这里提到KVO代码不仅仅是撤销注册，它还跟踪图中哪些对象已经改变 - 一旦它变得更复杂和异步，我们的渲染所需的信息（更多也许在后面的文章中。
 
-For various reasons, we couldn’t address every one of our design problems simultaneously, but we did need to improve the performance.
+由于各种原因，我们无法同时解决每个设计问题，但我们确实需要提高性能。
 
-### Solutions
+### 解决方案
 
-The upshot of all of this is that we moved away from KVO as a generic solution, and back towards something a bit more hand-coded.
+所有这一切的结果是我们作为通用解决方案从KVO转移到了更多手工编码的东西。
 
-Rather than actually hand-coding every setter however, we decided to write a code generator to do the work for us - something like [Mogenerator](https://github.com/rentzsch/mogenerator), but not tied to Core Data.
+然而，我们决定编写一个代码生成器来为我们完成工作 - 而不是像 [Mogenerator](https://github.com/rentzsch/mogenerator) 那样，但不依赖于 Core Data。
 
-The basic idea here is to describe our model classes, and then have a generator create all the boilerplate code for us. This can tackle Undo registration, but also encoding, decoding, and anything else where we want to apply a generic solution across a range of model classes.
+这里的基本思想是描述我们的模型类，然后让生成器为我们创建所有样板代码。这可以解决撤销注册问题，还可以解决编码，解码以及我们想要在一系列模型类中应用通用解决方案的任何其他问题。
 
-Not only does this give us a bit more performance (or a lot more, in some cases), it gives us some future-proofing.
+这不仅为我们提供了更多的性能（或者在某些情况下更多），它为我们提供了一些面向未来的能力。
 
-We have essentially a large body of boilerplate code for each model object, but when we need to make a design change, all we have to do is edit our code templates and recompile.
+我们基本上为每个模型对象提供了大量的样板代码，但是当我们需要进行设计更改时，我们所要做的就是编辑代码模板并重新编译。
 
-This gives us the agility to work through some more fundamental design issues one at a time, safe in the knowledge that we aren’t going to have a horrible block of manual changes to make for each one.
+这使我们能够灵活地一次完成一些更基本的设计问题，安全地知道我们不会对每个问题进行可怕的手动更改。
 
-This code generation tool is called Coma by the way, and it’s open source. Right now it’s pretty undocumented, and only for the brave. I’m planning a follow-up post on it though…
+这个代码生成工具顺便称为 Coma，它是开源的。现在它很没有文档，只有勇敢。我正在计划一个关于它的后续帖子......
 
-### One More Thing…
+### 还有一件事…
 
-One other thing that I think is worth saying on this topic, from a more conceptual or philosophical point of view.
+从概念或哲学的角度来看，我认为另一件事值得在这个主题上说。
 
-Code grows and evolves over time, and particularly when you have a shipping product, sometimes you end up somewhere that you didn’t quite intend to be.
+代码随着时间的推移而增长和发展，特别是当你有一个发货产品时，有时你最终会在某个你不太想要的地方。
 
-I’m far from convinced that things like Undo registration and change tracking should be in any way entangled into the model in the first place. There are many times that we might want to manipulate an object graph, and only some of those times require Undo registration.
+我完全不相信Undo注册和变更跟踪之类的东西应该以任何方式与模型纠缠在一起。很多时候我们可能想要操纵对象图，并且只有部分时间需要撤消注册。
 
-This stuff feels like controller code to me (in the MVC sense), and I think that it should live in a separate layer. Code that needs Undo registration, or needs to know what has changed when some action occurs, should ask this “model manipulation” layer to perform model changes, rather than doing them directly.
+这个东西对我来说就像控制器代码（在MVC意义上），我认为它应该存在于一个单独的层中。需要撤消注册的代码，或需要知道某些操作发生时已更改的内容的代码，应该要求此“模型操作”层执行模型更改，而不是直接执行。
 
-There are a number of ways this could be implemented: KVC, proxy objects that stand in for the actual model objects, or some other custom protocol. The actual technical solution isn’t as important to me as the conceptual separation. The problem with the naive KVO approach, or with custom setters on the model classes themselves, is that there is no separation, and you actually have to code in special ways to turn off Undo registration when you don’t want it (which feels like doing things the wrong way round, and tends to involve nasty globals or non thread-safe hacks).
+可以通过多种方式实现：KVC，代表实际模型对象的代理对象，或其他一些自定义协议。实际的技术解决方案对我来说并不像概念分离那么重要。天真的KVO方法或模型类本身的自定义设置器的问题在于没有分离，并且您实际上必须以特殊方式编码以在不需要时关闭撤消注册（感觉像以错误的方式做事，并且往往涉及令人讨厌的全局或非线程安全的黑客攻击）。
 
-As I hinted above, this stuff is something that we’re still working through with Sketch. We have the code working the way it currently does as the result of lots of logical decisions that made perfect sense at the time, but now we want to change track slightly. This sort of thing happens all the time in a code base of any significance. We don’t have the luxury of disappearing into a darkened room and emerging a year or two later with a complete rewrite, and we are old enough (and hopefully wise enough) to know how that often ends.
+正如我在上面暗示的那样，这些东西是我们仍在使用Sketch的东西。我们的代码按照当前的方式运行，因为当时很多逻辑决策都很有意义，但现在我们想稍微改变轨道。这种事情总是在任何重要的代码库中发生。我们没有奢侈的消失在一个黑暗的房间，并在一两年后出现完全重写，我们已经足够老了（并且希望足够明智）知道这通常会如何结束。
 
-Instead, what we’re doing is building up good suites of unit tests, and slowly whittling away at the design, whilst keeping the product shipping.
+相反，我们正在做的是建立良好的单元测试套件，并慢慢削减设计，同时保持产品出货。
 
-This can feel agonisingly slow at times, when the temptation is there to just dive in a rip everything apart. It’s the right way to do it though, and it can actually be immensely satisfying to watch the design and code slowly shift, oil-tanker like, onto its new heading…
+这种情况有时可能会让人感到痛苦，因为当诱惑只是潜入撕裂的时候。虽然这是正确的方法，但实际上可以非常令人满意地看到设计和代码慢慢转移，像油轮一样，进入新的标题......
 
 (For comments, I’m [@samdeane](https://twitter.com/samdeane) on Twitter)

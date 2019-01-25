@@ -1,26 +1,26 @@
 ---
-title: Working effectively with Legacy Code
+title: 有效地使用遗留代码
 ---
 
-Sketch’s codebase is large and many parts of it are quite a few years old, written for simpler times and lower demands. The first parts of the app were written in the time of Mac OS 10.3, when Bindings were the new hotness, and the modern runtime was far away. CoreData did not exist and nor did @property. (Objective-C has come a long way since then. Thanks Apple!)
+Sketch 的代码库很大，其中许多部分已经存在了几年，编写时间更短，需求更低。该应用程序的第一部分是在 Mac OS 10.3 时编写的，当 Bindings 成为新的热点时，现代运行时很远。 CoreData 不存在，也没有 @property。 （自那时起，Objective-C 已经走过了漫长的道路。感谢 Apple！）
 
-Sketch started under the name of DrawIt as a very simple drawing application; bezier-paths with fills and strokes. Never since have I a done a ‘grand rewrite’.
+Sketch 以 DrawIt 的名义开始，作为一个非常简单的绘图应用程序; bezier-paths 有填充和描边。从来没有我做过 “重写”。
 
-It is clear that this has helped make Sketch what it is today, both for good and bad. The good is that there is an extraordinary amount of ‘basic stuff’ that everybody just expects a drawing app to do; the baseline lies very high, and we’ve done that stuff.
+很明显，这有助于使 Sketch 成为今天的好，无论好坏。好处是每个人都希望绘图应用程序能够执行大量的 “基本内容”; 基线非常高，我们已经完成了这些工作。
 
-The bad is that I’m ‘stuck’ with engineering decisions that were made in the past when the demands were simpler. And you can never write the perfect architecture from the start because you don’t know yet what the future will bring, and overdesigning is a sure way of never shipping.
+糟糕的是，当我的需求变得更简单时，我 “陷入” 过去做出的工程决策。而且你永远不能从一开始就写出完美的建筑，因为你还不知道未来会带来什么，过度设计是一种永不运输的可靠方式。
 
-### The Old Design
+### 旧设计
 
-The old design was briefly this. Simple hand-coded model objects stored layer, style and path info. The view would change the model based on user-input and mark the view as dirty when it was done.
+旧设计简要说明了这一点。 简单的手工编码模型对象存储了图层，样式和路径信息。 视图将根据用户输入更改模型，并在完成后将视图标记为脏。
 
-When AppKit decided it was time to redraw the view it would tell us, and we would walk down the tree drawing all elements into the view. All of this was happening on the main thread.
+当 AppKit 决定是时候重新绘制它会告诉我们的视图时，我们会沿着树向下走，将所有元素绘制到视图中。 所有这一切都发生在主线上。
 
-### The Grand Masterplan
+### 大总体规划
 
-We have this grand masterplan in mind for what we would eventually like Sketch’s architecture to be and we’re continually making small steps to get there. At all times though, we have to keep shipping. We cannot afford do disappear off the radar for a year while we attempt a grand rewrite – which then turns out to take two or three years instead. I’d like to highlight one example from the past to illustrate this.
+我们有一个宏伟的总体规划，我们最终会喜欢 Sketch 的架构，并且我们不断采取小步骤来实现目标。 但在任何时候，我们都必须保持运输。 当我们尝试进行重大改写时，我们无法承受在雷达上消失一年 - 然后结果需要两到三年。 我想强调过去的一个例子来说明这一点。
 
-Originally all model objects in Sketch were direct subclasses of NSObject, each defining its own properties and writing its own initWithCoder/encodeWithCoder methods. As per Apple’s recommendation, we manage undo by having the setter methods register their inverse value before setting the new value.
+最初，Sketch 中的所有模型对象都是 NSObject 的直接子类，每个都定义了自己的属性并编写了自己的 initWithCoder / encodeWithCoder 方法。 根据 Apple 的建议，我们通过让 setter 方法在设置新值之前注册其反向值来管理撤消。
 
 ```objective-c
 - (void)setRect:(NSRect)rect {
@@ -29,14 +29,14 @@ Originally all model objects in Sketch were direct subclasses of NSObject, each 
 }
 ```
 
-Needless to say that this doesn’t scale; it’s error-prone and leads to loads of duplicate code. So instead I moved each model object (over the course of multiple point releases) to a new system.
+不用说，这不规模;它容易出错并导致大量重复代码。因此，我将每个模型对象（在多点发布过程中）移动到新系统。
 
-The new system was much like GitHub’s Mantle framework (which did not exist back then). It used KVO on itself to be notified of changes and register undo accordingly. It was a big step forward from the old stuff; undo registration and change management lived in one place, no longer scattered around multiple properties in multiple classes.
+新系统很像 GitHub 的 Mantle 框架（当时不存在）。它使用 KVO 本身来通知更改并相应地注册撤消。从旧的东西向前迈出了一大步;撤消注册和变更管理存在于一个地方，不再分散在多个类的多个属性中。
 
-All was not well though. We later discovered that the overhead of KVO was too much. 10K objects all observing multiple properties on themselves incurs a serious performance overhead. It seriously slowed down document loading and unloading, importing and even common operations on large sets of objects.
+一切都不顺利。我们后来发现 KVO 的开销太大了。所有观察到多个属性的 10K 对象都会导致严重的性能开销。它严重减慢了文档加载和卸载，导入甚至大型对象的常见操作。
 
-Since Sketch 2.3 we have been using a new system we wrote called Coma. Basically it means that we move the overhead from runtime to compile time by having that system spit out pre-generated base classes, much like [mogenerator](https://github.com/rentzsch/mogenerator).
+从 Sketch 2.3 开始，我们一直在使用一个名为 Coma 的新系统。基本上它意味着我们通过让系统吐出预先生成的基类来将开销从运行时转移到编译时，就像 [mogenerator](https://github.com/rentzsch/mogenerator) 一样.
 
-Fundamentally however, these are not big changes. Undo is still triggered on the setters and there are many cases where this behaviour is undesirable. The long-term plan is that undo should not be living in the model at all but instead reside in a layer above the model. Again, more about that later…
+然而，从根本上说，这些并没有太大的变化。 仍然会在setter上触发撤消，并且在许多情况下这种行为是不合需要的。 长期计划是撤消不应该只存在于模型中，而是存在于模型上方的层中。 再次，更多关于以后...
 
 (For comments, I’m [@pieteromvlee](https://twitter.com/pieteromvlee) on Twitter)

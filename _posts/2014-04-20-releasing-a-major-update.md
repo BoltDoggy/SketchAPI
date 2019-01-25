@@ -1,15 +1,14 @@
 ---
-title: Releasing a Major Update
+title: 发布重大更新
 ---
+发布重大更新
 
-Releasing a Major Update
+我们为 Sketch 3.0 添加了许多重要功能; Symbols，改进的共享样式和改进的导出工作流程是最重要的工作流程之一。我们还希望了解我们是否可以在此过程中获得一些速度提升。
 
-We had a number of important features to add for Sketch 3.0; Symbols, improved Shared Styles and an improved Export workflow being among the most important ones. And we also wanted to see if we could gain some speed improvements in the process.
+我们想要做这些事情而不必重写太多的代码。我最大的担心是进入这个过程，我们陷入了重写太多的共同陷阱 - 或者说更糟糕的是，所有事情。
 
-And we wanted to do these things without having to rewrite too much code. My biggest fear going into this process was that we fall into the common trap of rewriting too much – or worse, everything.
+我已经看到它发生了太多次与其他知名应用程序的重大更新; 在 1.x 开发过程中积累了大量的垃圾和垃圾之后，工程师宣称 2.0 必须完全重写，因此花了 4 年时间将其重新编写成一个新的应用程序。
 
-I’ve seen it happen too many times with major updates of other well-known apps; after much cruft and rubbish has piled up during 1.x development, engineering declares that 2.0 has to be a total rewrite and consequently spends 4 years re-writing it into a new app.
+版本 3.0 的开发周期从开始到结束花了我们大约 6 个月，我们在开始之前设定的截止日期之前完成了。我对这一成就感到非常自豪，公司里的每个人都帮助我们实现这一目标。
 
-The development cycle of version 3.0 took us around 6 months from start to finish and we were done before the deadline we had set ourselves at the start. I’m immensely proud of this achievement and everybody at the company has been nothing short of amazing in helping us get there.
-
-In the next post I want to explore the engineering philosophy at Bohemian Coding which I think can be described as ‘Working Effectively with Legacy Code’.
+在下一篇文章中，我想探索 Bohemian Coding 的工程哲学，我认为可以将其描述为 “有效地使用遗留代码”。
