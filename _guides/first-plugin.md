@@ -29,13 +29,10 @@ cd my-plugin
 
 ## 运行你的插件
 
-* 构建插件：`nom run build`
-
-* 启动 Sketch 并打开一个文件
-
-* 选择 `Plugins` - `my-plugin` - `My Command`
-
-* 恭喜你！你刚刚创建并执行了你的第一个 Sketch 命令
+- 构建插件：`nom run build`
+- 启动 Sketch 并打开一个文件
+- 选择 `Plugins` > `my-plugin` > `My Command`
+- 恭喜你！你刚刚创建并执行了你的第一个 Sketch 命令
 
 ## 插件的结构
 
@@ -63,15 +60,13 @@ cd my-plugin
 
 ### 插件清单：`manifest.json`
 
-*  每个 Sketch 插件都必须有一个 manifest.json 文件以描述它及它的功能。
-
-* Sketch 在启动期间会读取该文件。
-
-* 有关更多信息请查阅 manifest.json [manifest 引用](https://developer.sketchapp.com/guides/plugin-bundles/#manifest)。
+- 每个 Sketch 插件都必须有一个 manifest.json 文件以描述它及它的功能。
+- Sketch 在启动期间会读取该文件。
+- 有关更多信息请查阅 `manifest.json` [manifest 引用](https://developer.sketchapp.com/guides/plugin-bundles/#manifest)。
 
 ### `package.json`
 
-如果你之前查看过 nodejs 包，那你必然对 package.json 非常熟悉。它描述了你的包（在本例中是你的插件）的依赖关系，并且包含了一些关于它的元数据。
+如果你之前查看过 nodejs 包，那你必然对 `package.json` 非常熟悉。它描述了你的包（在本例中是你的插件）的依赖关系，并且包含了一些关于它的元数据。
 
 你会注意到里面有一段特殊区域：`skpm`。你可以在这里指定有关你插件的元数据（而不是在 `manifest.json` 文件中）。根据经验，我通常会将命令信息放在 `manifest.json` 中，而将其它所有的信息放在 `package.json` 中（sknpm 在编译时会将这些信息添加进 manifest.json 中，这样你就不必去手动复制它们了）。
 
@@ -84,15 +79,16 @@ cd my-plugin
 在 `src/my-command.js` 中，尝试着替换命令实现以展示所选中的图层数。
 
 ```js
-export default function(context) {
-    const selectedLayers = context.selection
-    const selectedCount = selectedLayers.length
+export default function() {
+  const doc = sketch.getSelectedDocument()
+  const selectedLayers = doc.selectedLayers
+  const selectedCount = selectedLayers.length
 
-    if (selectedCount === 0) {
-        context.document.showMessage('No layers are selected.')
-    } else {
-        context.document.showMessage(`${selectedCount} layers selected.`)
-    }
+  if (selectedCount === 0) {
+    sketch.UI.message('No layers are selected.')
+  } else {
+    sketch.UI.message(`${selectedCount} layers selected.`)
+  }
 }
 ```
 
@@ -110,6 +106,5 @@ export default function(context) {
 
 如果你想要更全面地阅读插件API，那么可以从以下几个主题着手：
 
-* [扩展API概述](https://developer.sketchapp.com/reference/) - 了解 Sketch 可扩展性的可能性。
-
-* [更多插件示例](https://github.com/BohemianCoding/SketchAPI/tree/develop/examples) - 看看我们的示例插件项目列表。
+- [扩展API概述](https://developer.sketchapp.com/reference/) - 了解 Sketch 可扩展性的可能性。
+- [其它插件示例](https://github.com/BohemianCoding/SketchAPI/tree/develop/examples) - 看看我们的示例插件项目列表。

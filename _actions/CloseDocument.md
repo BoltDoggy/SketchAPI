@@ -1,8 +1,9 @@
 ---
 title: CloseDocument
-summary: work in progress
+summary: Triggered when a document is closed
+documented: true
+related:
+  - OpenDocument
 ---
 
-Work In Progress
-
-Documentation for the CloseDocument action will appear here.
+This action is triggered when a document is closed.

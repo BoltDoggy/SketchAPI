@@ -146,14 +146,18 @@ This is just a future-proofing mechanism for us. If, in the future, we see a plu
 
 For now it's fine to omit it.
 
+#### `suppliesData`
+
+Indicates if the plugin supplies some data. If `true`, it results in the data icon showing in the plugin preferences for the plugin.
+
 #### `disableCocoaScriptPreprocessor`
 
-This is an advanced setting, and it defaults to `false`. When set to `true`, it will disable CocoaScript's own preprocessor. This way, you'll be able to use build systems like browserify or ES6 module syntax to develop your plugins.
+This is an advanced setting, and it defaults to `false`. When set to `true`, it will disable CocoaScript's own preprocessor. This way, you'll be able to use build systems like [skpm](https://skpm.io) or ES6 module syntax to develop your plugins.
 
 Setting this option to `true` does the following:
 
-* disables `@import` support, you'll have to take care of your imports manually
-* disables bracket syntax (i.e: `[obj msg:]`), you'll have to use dot-syntax only
+- disables `@import` support, you'll have to take care of your imports manually
+- disables bracket syntax (i.e: `[obj msg:]`), you'll have to use dot-syntax only
 
 #### `commands`
 
@@ -166,6 +170,10 @@ Each item within the array is a dictionary specifying the name, shortcut and oth
 A dictionary describing the menu layout for the commands in this Plugin.
 
 See [Plugins Menu](#plugins-menu) for more details on the contents of this dictionary, and how the menu for each Plugin is built.
+
+#### `scope`
+
+If present, and set to `"application"`, enables the plugin to be run when there are no documents open in Sketch.
 
 ## Plugin Commands
 
@@ -217,8 +225,8 @@ This is an array which lists the items to include in the menu.
 
 It can contain items of two types:
 
-* a string giving the identifier of a command
-* a dictionary describing a sub-menu (containing "title" and "items")
+- a string giving the identifier of a command
+- a dictionary describing a sub-menu (containing "title" and "items")
 
 #### `isRoot`
 

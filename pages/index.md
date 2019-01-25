@@ -43,8 +43,8 @@ permalink: /
 * [你的第一个插件](/guides/first-plugin) - 尝试创建一个简单的Hello World插件。
 * [扩展 API](/reference/) - 了解 Sketch 可扩展性 API。
 * [扩展示例](https://github.com/BohemianCoding/SketchAPI/tree/develop/examples/) - 您可以查看和构建的扩展示例列表。
-* [开发者论坛](http://sketchplugins.com/) - 一个论坛，插件开发者分享他们对所有事情的知识。
+* [开发者论坛](https://sketchplugins.com/) - 一个论坛，插件开发者分享他们对所有事情的知识。
 
 ### 帮助我们改进
 
-如果您在文档中发现任何错误或遗漏，或者您希望我们覆盖或澄清某些内容，请[提交问题](https://github.com/BoltDoggy/SketchAPI-CN/issues)，我们会尝试修复它。当然，由于本网站上的所有内容都是开源的，您可以通过 [suggesting an edit on GitHub](https://github.com/BoltDoggy/SketchAPI-CN/) 来帮助我们改进它（每页底部还有一个“Improve this page”链接，以防您浏览网站时发现错误）。
+如果您在文档中发现任何错误或遗漏，或者您希望我们覆盖或澄清某些内容，请[提交问题]({{site.github_repo}}/issues)，我们会尝试修复它。当然，由于本网站上的所有内容都是开源的，您可以通过 [suggesting an edit on GitHub]({{site.github_repo}}) 来帮助我们改进它（每页底部还有一个“Improve this page”链接，以防您浏览网站时发现错误）。

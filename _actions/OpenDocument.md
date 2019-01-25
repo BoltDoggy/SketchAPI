@@ -1,8 +1,9 @@
 ---
 title: OpenDocument
-summary: work in progress
+summary: Triggered when a document is opened
+documented: true
+related:
+  - CloseDocument
 ---
 
-Work In Progress
-
-Documentation for the OpenDocument action will appear here.
+This action is triggered when a document is opened.

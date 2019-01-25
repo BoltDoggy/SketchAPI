@@ -1,7 +1,7 @@
 ---
 title: Style
-order: 401
-section: Utils
+order: 204
+section: models
 ---
 
 ```javascript
@@ -23,7 +23,7 @@ shape.style.fills = [
 ]
 ```
 
-A utility class to represent the style of a Layer.
+The style of a Layer.
 
 | Properties                                                                   |                                                                 |
 | ---------------------------------------------------------------------------- | --------------------------------------------------------------- |
@@ -35,6 +35,31 @@ A utility class to represent the style of a Layer.
 | borderOptions<span class="arg-type">[BorderOptions](#borderoptions)</span>   | The options that the borders share.                             |
 | shadows<span class="arg-type">[Shadow](#shadow)[]</span>                     | The shadows of a Layer.                                         |
 | innerShadows<span class="arg-type">[Shadow](#shadow)[]</span>                | The inner shadows of a Layer.                                   |
+
+## Check if the Style is in sync with a Shared Style
+
+```javascript
+var isOutOfSync = style.isOutOfSyncWithSharedStyle(sharedStyle)
+```
+
+### Returns
+
+Wether the Style has some differences with a [Shared Style](#sharedstyle).
+
+## Sync the Style with a Shared Style
+
+```javascript
+style.syncWithSharedStyle(sharedStyle)
+```
+
+The style instance will be updated with the value of the Shared Style.
+
+```javascript
+var sharedStyle = styledLayer.sharedStyle
+sharedStyle.style = style
+```
+
+The Shared Style value will be updated with the style.
 
 ## `Style.BlendingMode`
 

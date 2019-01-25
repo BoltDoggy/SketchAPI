@@ -1,7 +1,7 @@
 ---
 title: Page
-order: 204
-section: components
+order: 303
+section: layers
 ---
 
 ```javascript
@@ -25,7 +25,7 @@ new Page()
 ```
 
 ```javascript
-new Artboard({
+new Page({
   name: 'my page',
 })
 ```
