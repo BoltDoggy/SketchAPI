@@ -29,7 +29,7 @@ cd my-plugin
 
 ## 运行你的插件
 
-- 构建插件：`nom run build`
+- 构建插件：`npm run build`
 - 启动 Sketch 并打开一个文件
 - 选择 `Plugins` > `my-plugin` > `My Command`
 - 恭喜你！你刚刚创建并执行了你的第一个 Sketch 命令
